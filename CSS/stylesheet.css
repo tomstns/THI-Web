@@ -1,0 +1,123 @@
+body {
+    background-color: #f4f4f4;
+    max-width: 900px;       /* maximale Breite des Inhalts */
+    margin: 0 auto;         /* zentriert horizontal */
+    font-family:  Helvetica, Arial, sans-serif;
+    font-size : 16px;
+    line-height: 1.6;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #000000;
+}
+
+div.center {
+    text-align: center;
+}
+
+div.bold {
+    font-weight: bold;
+}
+
+div.align-left {
+    align-items: center;
+    gap: 10px;
+}
+
+a {
+    text-decoration: none;   /* keine Unterstreichung */
+    color:#117cee;
+}
+
+a:hover {
+    color: #053d7d;         
+}
+
+a.special-link {
+    color: #b30000;         /* spezielle Farbe für bestimmte Links */
+}
+
+a.special-link:hover {
+    color: #ff0000;
+    text-decoration: underline; /* Unterstreichung beim Hover für spezielle Links */
+}
+
+form {
+    padding: 20px;
+    text-align: center;
+}
+
+fieldset {
+    background-color: #ffffff;
+    padding: 10px;
+}
+
+fieldset[title="PreferredChatLayout"] {
+    text-align: left;
+}
+
+legend { 
+    text-align: left;
+}
+
+button {
+    background-color: lightgray;
+    color: white;
+    padding: 10px 15px;
+    margin: 8px 4px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+}
+
+button[type="submit"] {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+img {
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
+}
+
+img.profile-picture {
+    border-radius: 0%;
+    float: left;
+    object-fit: cover;
+    width: 250px;
+    height: 250px;
+    margin-right: 20px;
+    margin-top: 25px;
+}
+
+input.coalinged, 
+select.coalinged {
+  width: 30%;              /* alle gleich breit */
+  box-sizing: border-box;   /* Padding zählt zur Gesamtbreite */
+  padding: 8px 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+
+
+textarea {
+    width: 99%;
+    resize: vertical;
+    min-height: 100px;
+}
+
+ul {
+    width: 95%;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 4px;
+}

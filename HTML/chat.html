@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/stylesheet.css">
     <title>Chat</title>
 </head>
 
@@ -14,16 +15,19 @@
     <p>
         &lt; <a href="freundesliste.html">Back</a> | 
         <a href="profile.html">Profile</a> |
-        <a href="freundesliste.html">Remove Friend</a>
+        <a href="freundesliste.html" class="special-link">Remove Friend</a>
     </p>
 
-    <div>
+    <hr>
+    
+    <fieldset>
         <p><strong>Tom:</strong> Hallo, Welt!</p>
         <p><strong>Jerry:</strong> Wie gehts?</p>
-        </div>
+    </fieldset>
 
-    <hr> <form action="chat.html" method="get">
-        <label for="newMessage">New Message:</label>
+    <hr>
+    
+    <form action="chat.html" method="get">
         <input type="text" id="newMessage" name="newMessage" size="50" placeholder="New Message">
         <button type="submit">Send</button>
     </form>

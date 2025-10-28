@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/stylesheet.css">
     <title>freundesliste</title>
 </head>
 
@@ -30,7 +31,7 @@
         </ul>
     </table>
     <hr>
-    <h3>New Request</h3>
+    <h3>New Requests</h3>
 
     <ol>
         <li>
@@ -39,12 +40,14 @@
             <button type="button">Reject</button>
         </li>
     </ol>
-    <h2>Add New Friend</h2>
+    
+    <hr>
+
     <form action="/add-friend" method="get">
-        <label for="friendName">Username:</label>
-        <input type="text" id="friendName" name="friendName" placeholder="Enter username">
+        <input type="text" id="friendName" name="friendName" placeholder="Add Friend to List">
         <button type="submit">Add Friend</button>
     </form>
+
 </body>
 
 </html>
