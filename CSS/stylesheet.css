@@ -1,7 +1,7 @@
 body {
     background-color: #f4f4f4;
-    max-width: 900px;       /* maximale Breite des Inhalts */
-    margin: 0 auto;         /* zentriert horizontal */
+    max-width: 900px;       
+    margin: 0 auto;         
     font-family:  Helvetica, Arial, sans-serif;
     font-size : 16px;
     line-height: 1.6;
@@ -28,7 +28,7 @@ div.align-left {
 }
 
 a {
-    text-decoration: none;   /* keine Unterstreichung */
+    text-decoration: none;   
     color:#117cee;
 }
 
@@ -37,12 +37,12 @@ a:hover {
 }
 
 a.special-link {
-    color: #b30000;         /* spezielle Farbe für bestimmte Links */
+    color: #b30000;         
 }
 
 a.special-link:hover {
     color: #ff0000;
-    text-decoration: underline; /* Unterstreichung beim Hover für spezielle Links */
+    text-decoration: underline; 
 }
 
 form {
@@ -97,8 +97,8 @@ img.profile-picture {
 
 input.coalinged, 
 select.coalinged {
-  width: 30%;              /* alle gleich breit */
-  box-sizing: border-box;   /* Padding zählt zur Gesamtbreite */
+  width: 30%;              
+  box-sizing: border-box;   
   padding: 8px 10px;
   margin: 8px 0;
   border: 1px solid #ccc;
