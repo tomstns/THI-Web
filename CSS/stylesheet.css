@@ -1,12 +1,39 @@
 body {
     background-color: #f4f4f4;
-    max-width: 900px;       
-    margin: 0 auto;         
-    font-family:  Helvetica, Arial, sans-serif;
-    font-size : 16px;
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 16px;
     line-height: 1.6;
     padding: 20px;
     box-sizing: border-box;
+}
+
+p {
+    text-align: justify;
+}
+
+.form-group,
+.form-row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+    width: auto;
+}
+
+.form-group label,
+.form-row label {
+    width: 150px;
+    text-align: right;
+    display: block;
+}
+
+.input-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column; 
 }
 
 h1 {
@@ -28,21 +55,21 @@ div.align-left {
 }
 
 a {
-    text-decoration: none;   
-    color:#117cee;
+    text-decoration: none;
+    color: #117cee;
 }
 
 a:hover {
-    color: #053d7d;         
+    color: #053d7d;
 }
 
 a.special-link {
-    color: #b30000;         
+    color: #b30000;
 }
 
 a.special-link:hover {
     color: #ff0000;
-    text-decoration: underline; 
+    text-decoration: underline;
 }
 
 form {
@@ -53,13 +80,15 @@ form {
 fieldset {
     background-color: #ffffff;
     padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
 }
 
 fieldset[title="PreferredChatLayout"] {
     text-align: left;
 }
 
-legend { 
+legend {
     text-align: left;
 }
 
@@ -95,17 +124,15 @@ img.profile-picture {
     margin-top: 25px;
 }
 
-input.coalinged, 
+input.coalinged,
 select.coalinged {
-  width: 30%;              
-  box-sizing: border-box;   
-  padding: 8px 10px;
-  margin: 8px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 10px;
+    margin: 0;
+    border: 1px solid;
+    border-radius: 4px;
 }
-
-
 
 textarea {
     width: 99%;
@@ -114,10 +141,174 @@ textarea {
 }
 
 ul {
-    width: 95%;
     background-color: #ffffff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding-top: 5px;
-    padding-bottom: 5px;
     border-radius: 4px;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+ul li {
+    padding: 8px 12px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+ul li:last-child {
+    border-bottom: none;
+}
+
+ul li a {
+    display: block;
+    color: #117cee;
+    text-decoration: none;
+}
+
+ul li:hover {
+    background-color: #f4f4f4;
+}
+
+.form-row.chat-input {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0;
+}
+
+.form-row.chat-input input[type="text"] {
+    flex-grow: 1;
+    margin: 0;
+    padding: 8px 10px;
+    width: auto;
+    border-radius: 4px 0 0 4px;
+}
+
+.form-row.chat-input button {
+    margin: 0;
+    padding: 10px 15px;
+    border-radius: 0 4px 4px 0;
+    height: auto;
+}
+
+fieldset p {
+    margin: 5px 0;
+    padding: 0;
+    text-align: left;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: none;
+}
+
+thead tr {
+    background-color: #ddd;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid;
+    border-right: none;
+    border-top: none;
+    border-left: none;
+}
+
+
+th:nth-child(1),
+th:nth-child(2),
+td:nth-child(1),
+td:nth-child(2) {
+    font-weight: bold;
+}
+
+
+tbody tr:nth-child(even) {
+    background-color: #eee;
+}
+
+tbody tr:hover {
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+@media (max-width: 899px) {
+    body,
+    .container,
+    main {
+        width: 100%;
+        max-width: none;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+    ul {
+        width: 100%;
+        max-width: none;
+        padding-left: 0; 
+    }
+    ul li {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .form-group,
+    .form-row {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 0;
+    }
+
+    .form-row.chat-input {
+        flex-direction: row !important; 
+    }
+
+    .form-group label,
+    .form-group input,
+    .form-group button,
+    .form-row input,
+    .form-row label,
+    input.coalinged,
+    select.coalinged,
+    .form-row button,
+    form button {
+        width: 100%;
+        margin-bottom: 10px;
+        display: block;
+        text-align: left;
+    }
+    
+    .form-row button,
+    form button {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+input.valid {
+    border: 2px solid green;
+}
+
+input.invalid {
+    border: 2px solid red;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    display: block; 
+    text-align: left;
+    height: 1em;
+    margin-top: 2px;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+@media (max-width: 899px) {
+    .error-message {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
 }
