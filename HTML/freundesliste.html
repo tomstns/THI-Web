@@ -14,40 +14,35 @@
     <b> | </b>
     <a href="settings.html">Settings</a>
     <hr>
-    <table>
-        <ul>
-            <li>
-                <a href="chat.html">Tom(3)</a>
-            </li>
-            <li>
-                <a href="chat.html">Marvin(1)</a>
-            </li>
-            <li>
-                <a href="chat.html">Tick</a>
-            </li>
-            <li>
-                <a href="chat.html">Trick</a>
-            </li>
+    
+    <ul id="friend-list">
         </ul>
-    </table>
+    
     <hr>
     <h3>New Requests</h3>
 
-    <ol>
-        <li>
-            Friend request from <strong>Track</strong>
-            <button type="button">Accept</button>
-            <button type="button">Reject</button>
-        </li>
-    </ol>
+    <ol id="request-list">
+        </ol>
     
     <hr>
 
-    <form action="/add-friend" method="get">
-        <input type="text" id="friendName" name="friendName" placeholder="Add Friend to List">
-        <button type="submit">Add Friend</button>
+    <form id="add-friend-form">
+        <div class="form-row chat-input">
+            <input type="text" 
+                   id="friend-request-name" 
+                   name="friendRequestName" 
+                   placeholder="Add Friend to List" 
+                   list="friend-selector">
+            
+            <button type="button" id="add-friend-button">Add</button>
+        </div>
+        
+        <datalist id="friend-selector">
+            </datalist>
     </form>
 
+    <script src="../js/main.js"></script>
+    <script src="../js/friends.js"></script>
 </body>
 
 </html>

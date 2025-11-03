@@ -6,11 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/stylesheet.css">
     <title>Chat</title>
+    
+    <style>
+        .message-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .message-container p {
+            margin: 2px 0;
+        }
+        .message-timestamp {
+            font-size: 0.8em;
+            color: #777;
+            white-space: nowrap;
+            margin-left: 15px;
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>Chat with Tom</h1>
+    <h1 id="chat-title">Chat with...</h1>
 
     <p>
         &lt; <a href="freundesliste.html">Back</a> | 
@@ -20,18 +37,19 @@
 
     <hr>
     
-    <fieldset>
-        <p><strong>Tom:</strong> Hallo, Welt!</p>
-        <p><strong>Jerry:</strong> Wie gehts?</p>
-    </fieldset>
+    <fieldset id="chat-history">
+        </fieldset>
 
     <hr>
     
-    <form action="chat.html" method="get">
-        <input type="text" id="newMessage" name="newMessage" size="50" placeholder="New Message">
-        <button type="submit">Send</button>
-    </form>
+    <div class="form-row chat-input">
+        <input type="text" id="new-message-input" name="newMessage" placeholder="New Message">
+        
+        <button type="button" id="send-message-button">Send</button>
+    </div>
 
+    <script src="../js/main.js"></script>
+    <script src="../js/chat.js"></script>
 </body>
 
 </html>
