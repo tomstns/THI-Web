@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('add-friend-button').addEventListener('click', addFriendRequest);
     
     loadFriendsAndRequests(); 
-    window.setInterval(loadFriendsAndRequests, 1000); 
+    window.setInterval(loadFriendsAndRequests, 2000); 
 });
 
 function loadFriendsAndRequests() {
