@@ -1,13 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     
     loadFriendsAndRequests(); 
-<<<<<<< HEAD
     
     window.setInterval(loadFriendsAndRequests, 3000); 
 
-=======
-    window.setInterval(loadFriendsAndRequests, 2000); 
->>>>>>> 4dec08d30ee646377f7d56be7d6162da44afe690
 });
 
 async function loadFriendsAndRequests() {
