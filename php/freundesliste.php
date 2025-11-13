@@ -1,39 +1,52 @@
 <?php
-// freundesliste.php
 require("../start.php"); 
 
 if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
     header("Location: login.php");
     exit();
 }
-$username = $_SESSION['user'];
+$username = $_SESSION['user']; 
 
 $error_message = "";
 $success_message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
-    $targetUsername = $_POST['friendUsername'] ?? ''; 
-
+    
     try {
-        if ($targetUsername) {
+        if ($_POST['action'] == 'accept_friend' || $_POST['action'] == 'reject_friend') {
+            $targetUsername = $_POST['friendUsername'] ?? ''; 
             
-            if ($_POST['action'] == 'accept_friend') {
-                
-                if ($service->friendAccept($targetUsername)) { 
-                    $success_message = htmlspecialchars($targetUsername) . " als Freund angenommen.";
-                } else {
-                    $error_message = "Fehler beim Annehmen der Anfrage.";
-                }
-
-            } elseif ($_POST['action'] == 'reject_friend') {
-                
-                if ($service->friendDismiss($targetUsername)) { 
-                    $success_message = htmlspecialchars($targetUsername) . "'s Anfrage abgelehnt.";
-                } else {
-                    $error_message = "Fehler beim Ablehnen der Anfrage.";
+            if ($targetUsername) {
+                if ($_POST['action'] == 'accept_friend') {
+                    if ($service->friendAccept($targetUsername)) { 
+                        $success_message = htmlspecialchars($targetUsername) . " als Freund angenommen.";
+                    } else {
+                        $error_message = "Fehler beim Annehmen der Anfrage.";
+                    }
+                } elseif ($_POST['action'] == 'reject_friend') {
+                    if ($service->friendDismiss($targetUsername)) { 
+                        $success_message = htmlspecialchars($targetUsername) . "'s Anfrage abgelehnt.";
+                    } else {
+                        $error_message = "Fehler beim Ablehnen der Anfrage.";
+                    }
                 }
             }
+        
+        } elseif ($_POST['action'] == 'add_friend') {
+            
+            $targetUsername = $_POST['friendRequestName'] ?? '';
+            
+            if ($targetUsername && $targetUsername !== 'none') {
+                if ($service->friendRequest(["username" => $targetUsername])) {
+                    $success_message = "Freundschaftsanfrage an " . htmlspecialchars($targetUsername) . " gesendet.";
+                } else {
+                    $error_message = "Fehler beim Senden der Anfrage.";
+                }
+            } else {
+                $error_message = "Bitte wähle einen Benutzer aus der Liste aus.";
+            }
         }
+        
     } catch (Exception $e) {
         $error_message = "Aktionsfehler: " . $e->getMessage();
         error_log("Friendlist POST error: " . $e->getMessage());
@@ -55,6 +68,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['action']) && $_GET['acti
         }
     }
 }
+
+$allUsers = $service->loadUsers();
+if ($allUsers === false) $allUsers = [];
+
+$friends = $service->loadFriends();
+if ($friends === false) $friends = [];
+
+$friendNames = array_map(function($friend) {
+    return $friend->getUsername();
+}, $friends);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,34 +106,42 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['action']) && $_GET['acti
     <?php endif; ?>
     
     <ul id="friend-list">
-        </ul>
+    </ul>
     
     <hr>
     <h3>New Requests</h3>
 
     <ol id="request-list">
-        </ol>
+    </ol>
     
     <hr>
 
     <h3>Add Friend to List</h3>
-    <form id="add-friend-form">
+    <form id="add-friend-form" method="POST" action="freundesliste.php">
         <div class="form-row chat-input">
-            <input type="text" 
-                    id="friend-request-name" 
-                    name="friendRequestName" 
-                    placeholder="Username" 
-                    list="friend-selector">
+        
+            <select name="friendRequestName" id="friend-request-name" class="coalinged">
+                <option value="none">Bitte einen Benutzer auswählen...</option>
+                <?php foreach ($allUsers as $user): ?>
+                    <?php 
+                    if ($user !== $username && !in_array($user, $friendNames)): 
+                    ?>
+                        <option value="<?php echo htmlspecialchars($user); ?>">
+                            <?php echo htmlspecialchars($user); ?>
+                        </option>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </select>
             
-            <button type="button" id="add-friend-button">Add</button>
+            <button type="submit" name="action" value="add_friend" id="add-friend-button">Add</button>
         </div>
         
-        <datalist id="friend-selector">
-            </datalist>
     </form>
     
+    <script>
+        window.currentUser = <?php echo json_encode($username); ?>;
+    </script>
     <script src="../js/main.js"></script>
     <script src="../js/friends.js"></script>
 </body>
-
 </html>
