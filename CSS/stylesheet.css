@@ -18,6 +18,7 @@ p {
     display: flex;
     flex-direction: row;
     gap: 10px;
+    justify-content: center; 
     align-items: center;
     margin-bottom: 10px;
     width: auto;
@@ -34,6 +35,7 @@ p {
     flex-grow: 1;
     display: flex;
     flex-direction: column; 
+    max-width: 300px; 
 }
 
 h1 {
@@ -74,7 +76,9 @@ a.special-link:hover {
 
 form {
     padding: 20px;
-    text-align: center;
+    max-width: 500px; 
+    margin: 0 auto;
+    text-align: center; 
 }
 
 fieldset {
@@ -100,6 +104,7 @@ button {
     border-radius: 3px;
     border: none;
     cursor: pointer;
+    display: inline-block;
 }
 
 button[type="submit"] {
@@ -126,7 +131,7 @@ img.profile-picture {
 
 input.coalinged,
 select.coalinged {
-    width: 100%;
+    width: 100%; 
     box-sizing: border-box;
     padding: 8px 10px;
     margin: 0;
@@ -233,6 +238,8 @@ tbody tr:hover {
     cursor: pointer;
 }
 
+/* -------------------------------------------------- */
+
 @media (max-width: 899px) {
     body,
     .container,
@@ -245,7 +252,7 @@ tbody tr:hover {
     ul {
         width: 100%;
         max-width: none;
-        padding-left: 0; 
+        padding-left: 0;
     }
     ul li {
         padding-left: 10px;
@@ -253,38 +260,58 @@ tbody tr:hover {
     }
 
     .form-group,
-    .form-row {
+    .form-row:not(.chat-input) { 
         display: flex;
-        flex-direction: column;
+        flex-direction: row; 
+        flex-wrap: wrap; 
         width: 100%;
-        gap: 0;
+        gap: 10px; 
+        justify-content: flex-start; 
     }
-
-    .form-row.chat-input {
-        flex-direction: row !important; 
-    }
-
+    
     .form-group label,
+    .form-row:not(.chat-input) label {
+        width: 100px; 
+        text-align: left; 
+        margin-bottom: 0; 
+    }
+
     .form-group input,
     .form-group button,
-    .form-row input,
-    .form-row label,
+    .form-row:not(.chat-input) input,
     input.coalinged,
     select.coalinged,
-    .form-row button,
+    .form-row:not(.chat-input) button,
     form button {
-        width: 100%;
-        margin-bottom: 10px;
-        display: block;
+        width: auto;
+        flex-grow: 1; 
+        margin-bottom: 0; 
         text-align: left;
     }
     
-    .form-row button,
-    form button {
+    .form-row.chat-input {
+        flex-direction: row; 
+        gap: 0; 
+    }
+    
+    .error-message {
+        width: 100%;
         margin-left: 0;
         margin-right: 0;
     }
+    
+    form button {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    .input-wrapper {
+        max-width: none;
+        width: 100%; 
+    }
 }
+
 
 input.valid {
     border: 2px solid green;
