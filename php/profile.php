@@ -54,13 +54,13 @@ if (empty($fullName)) {
         <p></p>
         <img src="../images/profile.png" alt="Profile Picture" width="150" height="150" class="profile-picture"><br>
         <fieldset>
-            <?php echo nl2br($aboutMe); 
+            <?php echo nl2br($aboutMe); ?>
             <p></p>
             
             <div class="bold">
                 Coffee or Tea? <br>
             </div>
-            &nbsp;&nbsp;&nbsp;&nbsp;<?php echo $corT; ?><br>
+            &nbsp;&nbsp;&;&nbsp;&nbsp;<?php echo $corT; ?><br>
 
             <div class="bold">
                 Name <br>
