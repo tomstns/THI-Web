@@ -1,97 +1,85 @@
-let chatPartnerName = null;
-
-document.addEventListener('DOMContentLoaded', () => {
+async function loadMessages(chatPartner) {
+    const chatContainer = document.getElementById("chatContainer");
     
-    chatPartnerName = getChatpartner(); 
+    try {
+        const response = await fetch(`../php/ajax_load_messages.php?to=${encodeURIComponent(chatPartner)}`, {
+            method: "GET",
+            credentials: "include" 
+        });
 
-    if (chatPartnerName) {
-        document.getElementById('chat-title').innerText = `Chat with ${chatPartnerName}`;
-    } else {
-        document.getElementById('chat-title').innerText = 'Chatpartner not found';
-        console.error("Kein 'friend'-Parameter in der URL gefunden.");
-        return; 
+        const messages = await response.json();
+
+        if (!response.ok) {
+            console.error("Fehler beim Laden:", response.status, messages.error);
+            chatContainer.innerHTML = `<p style="color: red; padding: 10px;">Fehler: ${messages.error || 'Unbekannter Fehler'}</p>`;
+            return;
+        }
+        
+        renderMessages(messages);
+
+    } catch (err) {
+        console.error("Netzwerkfehler:", err);
+        chatContainer.innerHTML = `<p style="color: red; padding: 10px;">Netzwerkfehler beim Laden des Chats.</p>`;
     }
-
-    document.getElementById('send-message-button').addEventListener('click', sendMessage);
-    
-    loadMessages();
-    window.setInterval(loadMessages, 1000); 
-});
-
-function getChatpartner() {
-    const url = new URL(window.location.href);
-    const queryParams = url.searchParams;
-    const friendValue = queryParams.get("friend");
-    console.log("Friend:", friendValue);
-    return friendValue;
 }
 
-function loadMessages() {
-    if (!chatPartnerName) return; 
+async function sendMessage(to, msg) {
+    try {
+        const response = await fetch("../php/ajax_send_message.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include", 
+            body: JSON.stringify({ msg, to })
+        });
 
-    const xmlhttp = new XMLHttpRequest();
-    
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            const messages = JSON.parse(xmlhttp.responseText);
-            const historyContainer = document.getElementById('chat-history');
-            
-            historyContainer.innerHTML = ''; 
-
-            messages.forEach(msg => {
-                
-                const container = document.createElement('div');
-                container.className = 'message-container';
-                
-                const text = document.createElement('p');
-                text.innerHTML = `<strong>${msg.from}:</strong> ${msg.msg}`;
-                
-                const time = document.createElement('span');
-                time.className = 'message-timestamp';
-                
-                // === DIESE ZEILE WURDE GEÄNDERT ===
-                time.innerText = new Date(msg.time).toLocaleTimeString(); 
-                
-                container.appendChild(text);
-                container.appendChild(time);
-                historyContainer.appendChild(container);
-            });
+        if (!response.ok) {
+            console.warn("Senden fehlgeschlagen:", response.status);
         }
-    };
-    
-    const url = `${window.backendUrl}/message/${encodeURIComponent(chatPartnerName)}`;
-    xmlhttp.open("GET", url, true); 
-    xmlhttp.setRequestHeader('Authorization', 'Bearer ' + window.token); 
-    xmlhttp.send();
+    } catch (err) {
+        console.error("Fehler beim Senden:", err);
+    }
 }
 
-function sendMessage() {
-    const input = document.getElementById('new-message-input');
-    const messageText = input.value;
-    
-    if (messageText.trim() === '' || !chatPartnerName) {
-        return; 
+function renderMessages(messages) {
+    const chatContainer = document.getElementById("chatContainer");
+    const isScrolledToBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 1;
+
+    chatContainer.innerHTML = ""; 
+
+    if (messages.length === 0) {
+        chatContainer.innerHTML = "<p style='padding: 10px; text-align: center; font-style: italic;'>Noch keine Nachrichten vorhanden.</p>";
+        return;
     }
 
-    const xmlhttp = new XMLHttpRequest();
-    
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState === 4 && xmlhttp.status === 204) {
-            input.value = ''; 
-            loadMessages();   
-        } else if (xmlhttp.readyState === 4) {
-            console.error("Fehler beim Senden der Nachricht:", xmlhttp.responseText);
+    messages.forEach((m) => {
+        const div = document.createElement("div");
+        div.className = m.from === window.chatPartner ? "message friend" : "message me";
+        
+        let timeString = '';
+        if (m.time) {
+            try {
+                const date = new Date(m.time * 1000); 
+                timeString = date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+            } catch(e) { }
         }
-    };
 
-    const url = `${window.backendUrl}/message`;
-    xmlhttp.open("POST", url, true);
-    xmlhttp.setRequestHeader('Authorization', 'Bearer ' + window.token);
-    xmlhttp.setRequestHeader('Content-Type', 'application/json'); 
-    
-    const payload = JSON.stringify({ 
-        message: messageText, 
-        to: chatPartnerName 
+        const messageContent = document.createElement('span');
+        messageContent.className = 'message-content';
+        messageContent.innerHTML = `<strong>${m.from}:</strong> ${m.msg}`; 
+
+        const messageTimestamp = document.createElement('span');
+        messageTimestamp.className = 'message-timestamp';
+        messageTimestamp.innerText = timeString;
+
+        div.appendChild(messageContent);
+        div.appendChild(messageTimestamp);
+        
+        chatContainer.appendChild(div);
     });
-    xmlhttp.send(payload);
+
+    if (isScrolledToBottom) {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
 }

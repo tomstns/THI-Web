@@ -1,4 +1,40 @@
+window.addEventListener("DOMContentLoaded", function () {
+    
+    const chatContainer = document.getElementById("chatContainer");
+    const messageForm = document.getElementById("messageForm");
+    
+    if (messageForm) {
+        
+        messageForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const messageInput = document.getElementById("messageInput"); 
+            const message = messageInput.value.trim();
+            
+            if (!message || !window.chatPartner) return;
 
-window.backendUrl = "https://online-lectures-cs.thi.de/chat/ec124142-5701-46e4-8a1f-03730abe0b56";
+            await sendMessage(window.chatPartner, message); 
+            
+            messageInput.value = "";
+            
+            await loadMessages(window.chatPartner); 
+        });
 
-window.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiVG9tIiwiaWF0IjoxNzYyMTU5OTI3fQ.7MA7fcYt4HLYpyKmGF64MJ5j-IKqQKNLU1bCBk7A_IE";
+        setInterval(() => {
+            if (window.chatPartner) {
+                loadMessages(window.chatPartner);
+            }
+        }, 3000);
+
+        if (window.chatPartner) {
+            loadMessages(window.chatPartner);
+        }
+    }
+
+    const friendList = document.getElementById("friendList");
+    
+    if (friendList) {
+        console.log("Freundesliste-Logik würde hier laufen.");
+    }
+    
+});
