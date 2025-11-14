@@ -312,3 +312,46 @@ input.invalid {
         margin-right: 0;
     }
 }
+
+.message {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 8px 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    max-width: 70%;
+    word-wrap: break-word; 
+}
+
+.message-content {
+    flex-grow: 1;
+    padding-right: 15px;
+}
+
+.message-timestamp {
+    font-size: 0.8em;
+    color: #777;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.message.me {
+    background-color: #007BFF;
+    color: white;
+    margin-left: auto;
+}
+
+.message.friend {
+    background-color: #e9e9eb;
+    color: black;
+    margin-right: auto;
+}
+
+.message.me .message-timestamp {
+    color: #f0f0f0; 
+}
+
+.message.friend .message-timestamp {
+     color: #555;
+}

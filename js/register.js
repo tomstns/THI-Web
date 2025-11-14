@@ -10,11 +10,6 @@ function setValid(inputElement) {
     document.getElementById(inputElement.id + '-error').innerText = '';
 }
 
-function clearValidation(inputElement) {
-    inputElement.classList.remove('invalid', 'valid');
-    document.getElementById(inputElement.id + '-error').innerText = '';
-}
-
 function validateUsernameLength() {
     const usernameInput = document.getElementById('username');
     const username = usernameInput.value;
@@ -93,8 +88,19 @@ function validateFormOnSubmit() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('username').addEventListener('input', validateUsernameLength);
-    document.getElementById('password').addEventListener('input', validatePasswordLength);
-    document.getElementById('password').addEventListener('input', validatePasswordMatch);
-    document.getElementById('confirm-password').addEventListener('input', validatePasswordMatch);
+
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const confirmInput = document.getElementById('confirm-password');
+
+    if (usernameInput) {
+        usernameInput.addEventListener('input', validateUsernameLength);
+    }
+    if (passwordInput) {
+        passwordInput.addEventListener('input', validatePasswordLength);
+        passwordInput.addEventListener('input', validatePasswordMatch);
+    }
+    if (confirmInput) {
+        confirmInput.addEventListener('input', validatePasswordMatch);
+    }
 });
