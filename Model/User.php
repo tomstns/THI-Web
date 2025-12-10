@@ -5,19 +5,17 @@ use JsonSerializable;
 
 class User implements JsonSerializable {
     
-    // Eigenschaften, die vom Backend geladen werden
     private $username;
     private $firstName;
     private $lastName;
-    private $corT; // Coffee or Tea
+    private $corT; 
     private $aboutMe;
-    private $chatLayout; // FEHLENDE EIGENSCHAFT
+    private $chatLayout; 
 
     public function __construct($username = null) {
         $this->username = $username;
     }
 
-    // --- Getter-Methoden (Hattest du schon) ---
 
     public function getUsername() {
         return $this->username;
@@ -41,10 +39,7 @@ class User implements JsonSerializable {
 
     public function getChatLayout() {
         return $this->chatLayout;
-    }
-
-    // --- Setter-Methoden (NEU) ---
-    
+    }    
     public function setFirstName($firstName) {
         $this->firstName = $firstName;
     }
@@ -65,8 +60,6 @@ class User implements JsonSerializable {
         $this->chatLayout = $chatLayout;
     }
 
-
-    // --- Serialisierung (Unverändert) ---
 
     public function jsonSerialize(): mixed {
         return get_object_vars($this);
