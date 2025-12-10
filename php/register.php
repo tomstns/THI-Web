@@ -75,6 +75,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 
             <form action="register.php" method="post" id="register-form" novalidate>
                 
+                <input type="hidden" name="action" value="register">
+                
                 <div class="form-floating mb-3">
                     <input type="text" id="username" name="username" placeholder="Username" class="form-control" value="<?php echo htmlspecialchars($username); ?>" required>
                     <label for="username">Username</label>
@@ -97,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                     <a href="login.php" class="w-100 me-2">
                         <button type="button" class="btn btn-secondary w-100">Cancel</button>
                     </a>
-                    <button type="submit" name="action" value="register" class="btn btn-primary w-100">Create Account</button>
+                    <button type="submit" class="btn btn-primary w-100">Create Account</button>
                 </div>
             </form>
         </div>

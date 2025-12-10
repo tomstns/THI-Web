@@ -37,10 +37,19 @@ async function loadFriendsAndRequests() {
                 li.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center'; 
                 
                 const a = document.createElement('a');
+                a.className = 'text-decoration-none text-body fw-bold'; 
                 a.href = `chat.php?friend=${encodeURIComponent(friend.username)}`; 
                 a.innerText = friend.username; 
                 
                 li.appendChild(a);
+                
+                if (friend.unread && friend.unread > 0) {
+                    const badge = document.createElement('span');
+                    badge.className = 'badge bg-primary rounded-pill';
+                    badge.innerText = friend.unread;
+                    li.appendChild(badge);
+                }
+
                 friendListUl.appendChild(li);
 
             } else if (friend.status === 'requested') { 
@@ -50,11 +59,11 @@ async function loadFriendsAndRequests() {
                 
                 const textWrapper = document.createElement('span');
                 textWrapper.className = 'me-auto';
-                textWrapper.innerHTML = `Friend Request from <strong>${friend.username}</strong>`;
+                textWrapper.innerHTML = `Freundschaftsanfrage von <strong>${friend.username}</strong>`;
 
                 const btn = document.createElement('button');
                 btn.className = 'btn btn-sm btn-info'; 
-                btn.innerText = 'See Request';
+                btn.innerText = 'Bearbeiten';
                 
                 btn.setAttribute('data-bs-toggle', 'modal');
                 btn.setAttribute('data-bs-target', '#requestModal');
