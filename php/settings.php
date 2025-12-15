@@ -1,35 +1,30 @@
 <?php
 require("../start.php"); 
 
-// 1. Session-Prüfung: Ist jemand eingeloggt?
 if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
     header("Location: login.php");
     exit();
 }
 $username = $_SESSION['user'];
 $success_message = "";
+$error_message = "";
 
-// 2. SPEICHERN: Prüfen, ob das Formular per POST gesendet wurde
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    // Aktuelles Benutzerobjekt laden, um es zu aktualisieren
     $user = $service->loadUser($username); 
 
-    // Daten aus dem Formular holen
     $firstName = $_POST['FirstName'] ?? '';
     $lastName = $_POST['LastName'] ?? '';
     $corT = $_POST['CorT'] ?? 'NeitherNor';
     $aboutMe = $_POST['AboutMe'] ?? '';
-    $chatLayout = $_POST['ChatLayout'] ?? ''; // Wert von den Radio-Buttons
+    $chatLayout = $_POST['ChatLayout'] ?? 'OneLine'; 
 
-    // Daten im User-Objekt setzen (mit den neuen Settern)
     $user->setFirstName($firstName);
     $user->setLastName($lastName);
     $user->setCorT($corT);
     $user->setAboutMe($aboutMe);
     $user->setChatLayout($chatLayout);
 
-    // Aktualisiertes User-Objekt im Backend speichern
     if ($service->saveUser($user)) {
         $success_message = "Einstellungen erfolgreich gespeichert!";
     } else {
@@ -37,18 +32,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// 3. LADEN: Benutzerdaten (neu) laden, um das Formular vorab auszufüllen
-// (Dies geschieht nach dem Speichern, um die neuesten Daten anzuzeigen)
 $user = $service->loadUser($username);
 
-// Daten in Variablen für das HTML-Formular speichern
 $firstName = $user->getFirstName() ?? '';
 $lastName = $user->getLastName() ?? '';
 $corT = $user->getCorT() ?? 'NeitherNor';
 $aboutMe = $user->getAboutMe() ?? '';
-$chatLayout = $user->getChatLayout() ?? 'OneLine'; // Standardwert
+$chatLayout = $user->getChatLayout() ?? 'OneLine'; 
 
-// Hilfsfunktionen, um 'selected' oder 'checked' zu setzen
 function isSelected($optionValue, $currentValue) {
     return ($optionValue === $currentValue) ? 'selected' : '';
 }
@@ -61,67 +52,78 @@ function isChecked($optionValue, $currentValue) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../CSS/stylesheet.css">
     <title>Profile Settings</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
-    <h1>Profile Settings</h1>
+    <div class="container my-5">
+        <h1 class="mb-4">Profile Settings</h1>
 
-    <?php if (!empty($success_message)): ?>
-        <p style="color: green; font-weight: bold;"><?php echo $success_message; ?></p>
-    <?php endif; ?>
-    
-    <form method="POST" action="settings.php"> 
-        <fieldset title="BaseData">
-            <legend>Base Data</legend>
+        <?php if (!empty($success_message)): ?>
+            <div class="alert alert-success" role="alert"><?php echo $success_message; ?></div>
+        <?php endif; ?>
+        <?php if (!empty($error_message)): ?>
+            <div class="alert alert-danger" role="alert"><?php echo $error_message; ?></div>
+        <?php endif; ?>
+        
+        <form method="POST" action="settings.php"> 
             
-            <div class="form-group">
-                <label for="FirstName">First Name</label>
-                <div class="input-wrapper">
-                    <input type="text" id="FirstName" name="FirstName" class="coalinged" 
+            <div class="card p-3 mb-4 shadow-sm">
+                <h5 class="card-title mb-3">Base Data</h5>
+                
+                <div class="form-floating mb-3">
+                    <input type="text" id="FirstName" name="FirstName" class="form-control" 
                            placeholder="Your name" value="<?php echo htmlspecialchars($firstName); ?>">
+                    <label for="FirstName">First Name</label>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="LastName">Last Name</label>
-                <div class="input-wrapper">
-                    <input type="text" id="LastName" name="LastName" class="coalinged" 
+                <div class="form-floating mb-3">
+                    <input type="text" id="LastName" name="LastName" class="form-control" 
                            placeholder="Your surname" value="<?php echo htmlspecialchars($lastName); ?>">
+                    <label for="LastName">Last Name</label>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="CorT">Coffee or Tea?</label>
-                <div class="input-wrapper">
-                    <select id="CorT" name="CorT" class="coalinged">
-                        <option value="NeitherNor" <?php echo isSelected('NeitherNor', $corT); ?>>Neither Nor</option>
+                <div class="mb-3">
+                    <label for="CorT" class="form-label">Coffee or Tea?</label>
+                    <select id="CorT" name="CorT" class="form-select">
+                        <option value="NeitherNor" <?php echo isSelected('NeitherNor', $corT); ?>>Neither nor</option>
                         <option value="Coffee" <?php echo isSelected('Coffee', $corT); ?>>Coffee</option>
                         <option value="Tea" <?php echo isSelected('Tea', $corT); ?>>Tea</option>
                     </select>
                 </div>
             </div>
-        </fieldset>
 
-        <fieldset title="AboutYou">
-            <legend>Tell Something About You</legend>
-            <textarea id="AboutMe" name="AboutMe" rows="4" cols="50" 
-                      placeholder="Leave a comment here"><?php echo htmlspecialchars($aboutMe); ?></textarea>
-        </fieldset>
+            <div class="card p-3 mb-4 shadow-sm">
+                <h5 class="card-title mb-3">Tell Something About You</h5>
+                <div class="form-floating">
+                    <textarea id="AboutMe" name="AboutMe" class="form-control" 
+                              placeholder="Leave a comment here" style="height: 100px"><?php echo htmlspecialchars($aboutMe); ?></textarea>
+                    <label for="AboutMe">Short Description</label>
+                </div>
+            </div>
 
-        <fieldset title="PreferredChatLayout">
-            <legend>Preferred Chat Layout</legend>
-            <p></p>
-            <input type="radio" id="OneLine" name="ChatLayout" value="OneLine" <?php echo isChecked('OneLine', $chatLayout); ?>>
-            <label for="OneLine">Username and message in one line</label>
-            <p></p>
-            <input type="radio" id="SepLines" name="ChatLayout" value="SepLines" <?php echo isChecked('SepLines', $chatLayout); ?>>
-            <label for="SepLines">Username and message in separate lines</label>
-            <p></p>
-        </fieldset>
+            <div class="card p-3 mb-4 shadow-sm">
+                <h5 class="card-title mb-3">Preferred Chat Layout</h5>
+                
+                <div class="form-check">
+                    <input type="radio" id="OneLine" name="ChatLayout" value="OneLine" class="form-check-input" <?php echo isChecked('OneLine', $chatLayout); ?>>
+                    <label for="OneLine" class="form-check-label">Username and message in one line</label>
+                </div>
+                
+                <div class="form-check">
+                    <input type="radio" id="SepLines" name="ChatLayout" value="SepLines" class="form-check-input" <?php echo isChecked('SepLines', $chatLayout); ?>>
+                    <label for="SepLines" class="form-check-label">Username and message in separated lines</label>
+                </div>
+            </div>
 
-        <button type="button" onclick="location.href='freundesliste.php'">Cancel</button>
-        <button type="submit">Save</button>
-    </form>
+            <div class="d-flex justify-content-end pt-3">
+                <button type="button" onclick="location.href='freundesliste.php'" class="btn btn-secondary me-2">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
